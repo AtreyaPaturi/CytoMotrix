@@ -1,9 +1,8 @@
 # CytoMotrix
 
-Scratch-wound (collective cell migration) analysis for time-lapse images from a
-Zeiss Celldiscoverer 7. It splits a multi-scene `.czi` into per-well,
-per-time-point images and then measures wound closure and migration-front
-velocity on the GPU (PyTorch; falls back to CPU).
+CytoMotrix (Cyto + Motion + matrix) is a scratch-wound/cell migration analysis for time-lapse images from a
+bright-field acquisition mode on Zeiss microscopes. It splits a multi-scene `.czi` into per-well,
+per-time-point images and then measures wound closure and migration-front velocity on the GPU (PyTorch; falls back to CPU).
 
 ## Pipeline
 
