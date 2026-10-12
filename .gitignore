@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+# microscopy data and results - keep out of the repo
+*.czi
+*.tif
+*.tiff
+*.mp4
+*.gif
+manifest.csv
+migration_analysis/
+scratch_analysis/
+plate_map.csv

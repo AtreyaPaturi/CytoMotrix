@@ -1,0 +1,7 @@
+well,cell_line,treatment
+A1,HeLa WT,Control
+A2,HeLa WT,DrugA
+A3,HeLa WT,DrugA+DrugB
+B1,HeLa KO,Control
+B2,HeLa KO,DrugA
+B3,HeLa KO,DrugA+DrugB

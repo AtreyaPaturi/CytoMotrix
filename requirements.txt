@@ -1,0 +1,11 @@
+# CZI splitting
+pylibCZIrw
+tifffile
+imageio
+imageio-ffmpeg
+# analysis
+torch
+numpy
+scipy
+pillow
+matplotlib
