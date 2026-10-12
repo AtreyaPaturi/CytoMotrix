@@ -2,7 +2,7 @@
 
 CytoMotrix (Cyto + Motion + matrix) is a scratch-wound/cell migration analysis tool for time-lapse bright-field/phase contrast images acquired on Zeiss microscopes. It splits a multi-scene `.czi` into per-well, per-time-point images and then measures wound closure and migration-front velocity. 
 
-Each well is labelled with its cell line and treatment from a plate map that can be made using 'make_plate_map-py'. Wound area is then segmented automatically in Python using GPU-accelerated PyTorch (If GPU is absent . Each frame was downsampled 2× by block averaging and normalised to its median intensity. It was then smoothed with a 4 µm box filter. The open wound was distinguished from the cell monolayer by local image texture, which is high where cells are present and low in the cell-free gap. Texture was measured in one of two ways. The first method used the log of the local standard deviation in a 40 µm window, followed by morphological closing (8 µm) and opening (15 µm). The wound was taken as the largest smooth connected region, with holes filled. The second method used the Shannon entropy of 16-level quantised intensities in a 20 µm-radius disk. Open specks smaller than 200 µm² were removed and debris smaller than 150 µm² inside the gap was filled. The wound was then defined as all open pixels inside the scratch region identified at t0. In both methods, an Otsu threshold was computed from the first frame of each field and applied to every later frame. The following metrics were calculated in physical units from the image's pixel size:
+Each well is labelled with its cell line and treatment from a plate map that can be made using 'make_plate_map-py'. Wound area is then segmented automatically in Python using GPU-accelerated PyTorch (if a GPU is not available, it falls back to using CPU). Each frame was downsampled 2× by block averaging and normalised to its median intensity. It was then smoothed with a 4 µm box filter. The open wound was distinguished from the cell monolayer by local image texture, which is high where cells are present and low in the cell-free gap. Texture was measured in one of two ways. The first method used the log of the local standard deviation in a 40 µm window, followed by morphological closing (8 µm) and opening (15 µm). The wound was taken as the largest smooth connected region, with holes filled. The second method used the Shannon entropy of 16-level quantised intensities in a 20 µm-radius disk. Open specks smaller than 200 µm² were removed and debris smaller than 150 µm² inside the gap was filled. The wound was then defined as all open pixels inside the scratch region identified at t0. In both methods, an Otsu threshold was computed from the first frame of each field and applied to every later frame. The following metrics were calculated in physical units from the image's pixel size:
 1. Wound area
 2. Relative wound area (% of t0)
 3. Percent closure
@@ -21,7 +21,7 @@ experiment.czi ──► split_czi_by_well_time.py ──► PNGs + manifest.csv
 | Script | What it does |
 |---|---|
 | `make_plate_map.py` | Writes a plate-map template for **6, 8, 12, 24 or 96-well** plates, optionally pre-filled with cell lines (per row) and treatments (per column). |
-| `split_czi_by_well_time.py` | Splits the CZI into 16-bit (or 8-bit) PNGs per well / field / time point, writes `manifest.csv`, and can also write annotated MP4s and T-stack TIFFs. |
+| `split_czi_by_well_time.py` | Splits the CZI into 16-bit (or 8-bit) PNGs per well/field/time point, writes `manifest.csv`, and can also write annotated MP4s and T-stack TIFFs. |
 | `analyze_wound_migration_gpu.py` | Wound detection by **local texture (standard deviation) + Otsu**. Uses the largest open region as the wound. |
 | `scratch_assay_gpu.py` | Wound detection by **local entropy + Otsu**. Counts all open space inside the t0 scratch, plus linear-regression reports per field and optional entropy maps and GIFs. |
 
@@ -68,7 +68,7 @@ Wells left blank count as unused. The file is a plain three-column CSV
 ### 2. Split the CZI
 
 ```bash
-# check wells, fields and the condition mapping first (writes nothing)
+# check wells, fields, and the condition mapping first (writes nothing)
 python split_czi_by_well_time.py --in experiment.czi --plate-map plate_map.csv --dry-run
 
 # export 16-bit PNGs (+ optional videos)
