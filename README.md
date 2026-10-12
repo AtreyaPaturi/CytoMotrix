@@ -1,8 +1,14 @@
 # CytoMotrix
 
-CytoMotrix (Cyto + Motion + matrix) is a scratch-wound/cell migration analysis for time-lapse images from a
-bright-field acquisition mode on Zeiss microscopes. It splits a multi-scene `.czi` into per-well,
-per-time-point images and then measures wound closure and migration-front velocity on the GPU (PyTorch; falls back to CPU).
+CytoMotrix (Cyto + Motion + matrix) is a scratch-wound/cell migration analysis tool for time-lapse bright-field/phase contrast images acquired on Zeiss microscopes. It splits a multi-scene `.czi` into per-well, per-time-point images and then measures wound closure and migration-front velocity. 
+
+Each well is labelled with its cell line and treatment from a plate map that can be made using 'make_plate_map-py'. Wound area is then segmented automatically in Python using GPU-accelerated PyTorch (If GPU is absent . Each frame was downsampled 2× by block averaging and normalised to its median intensity. It was then smoothed with a 4 µm box filter. The open wound was distinguished from the cell monolayer by local image texture, which is high where cells are present and low in the cell-free gap. Texture was measured in one of two ways. The first method used the log of the local standard deviation in a 40 µm window, followed by morphological closing (8 µm) and opening (15 µm). The wound was taken as the largest smooth connected region, with holes filled. The second method used the Shannon entropy of 16-level quantised intensities in a 20 µm-radius disk. Open specks smaller than 200 µm² were removed and debris smaller than 150 µm² inside the gap was filled. The wound was then defined as all open pixels inside the scratch region identified at t0. In both methods, an Otsu threshold was computed from the first frame of each field and applied to every later frame. The following metrics were calculated in physical units from the image's pixel size:
+1. Wound area
+2. Relative wound area (% of t0)
+3. Percent closure
+4. Mean wound width (area divided by scratch length)
+
+Migration-front velocity (µm/h per edge) was calculated as half the negative slope of a linear fit of wound width against time. Only frames in which the wound was still more than 5% open were included in the fit. Values were summarised as mean ± SD across fields for each condition. Segmentation accuracy was checked visually on QC overlays for every field.
 
 ## Pipeline
 
