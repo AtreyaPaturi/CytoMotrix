@@ -107,6 +107,10 @@ The entropy + Otsu approach in `scratch_assay_gpu.py` builds on
 S. Bhattiprolu, *Python for Microscopists* (`021-scratch_assay_using_scikit_image.py`),
 and E. Gad, [Image-Processing-and-Analysis-of-the-Scratch-Assay](https://github.com/eyadgad/Image-Processing-and-Analysis-of-the-Scratch-Assay).
 
+## AI Acknowledgment 
+
+During the preparation of this work, I have used Claude Opus 5.5 to document and commit changes to GitHub. After using this tool, I have reviewed and edited the content as needed and take(s) full responsibility for the content of the script.
+
 ## License
 
 MIT, see [LICENSE](LICENSE).
